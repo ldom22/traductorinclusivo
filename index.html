@@ -1,0 +1,121 @@
+<html>
+
+<head>
+	<title>Traductor a lenguaje inclusivo</title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+</head>
+
+<body>
+	<h2>Traductor a lenguaje inclusivo</h2>
+
+	<p>
+		Elige una opción:
+		<form>
+			<input onchange='doit();' type='radio' name='template' value='x'   id='x_radio' checked='checked'>x: cambia la última 'a' y 'o' por 'x'</input><br>
+			<input onchange='doit();' type='radio' name='template' value='e'   id='e_radio'>e: 'cambia la última 'a' y 'o' por 'e'</input><br>
+			<input onchange='doit();' type='radio' name='template' value='ex'  id='ex_radio'>e perro Bermudez: cambia todas las vocales por 'e'</input><br>
+			<input onchange='doit();' type='radio' name='template' value='ret' id='ret_radio'>rEtRaSaDo: pOnE eL tExTo AsÍ</input><br>
+		</form>
+	</p>
+
+	<p>Escribe el texto a traducir:</p>
+	<textarea rows="4" cols="50" id='intext' oninput='doit();'></textarea>
+
+	<p>Resultado:</p>
+	<textarea rows="4" cols="50" id='outtext' oninput='doit();'></textarea>
+
+	<p></p>
+	&nbsp;<button onclick="copyArea();">Copiar</button>
+	&nbsp;<button onclick="clearArea();">Borrar</button>
+	<p>
+
+	<br><br><br><br>
+	<p>Click <a href="">aquí</a> para reportar problemas o sugerencias.</p>
+
+</body>
+
+<script>
+	function retard(text){
+		var resultado = '';
+		var toggle = false;
+		for(var i=0; i<text.length; i++){
+			if(toggle){
+				resultado += text.toLowerCase().charAt(i).toUpperCase();
+			} else {
+				resultado += text.toLowerCase().charAt(i);
+			}
+			toggle = !toggle;
+		}
+		return resultado;
+	}
+
+	function eextreme(text){
+		text = text.replaceAll("a","e");
+		text = text.replaceAll("i","e");
+		text = text.replaceAll("o","e");
+		text = text.replaceAll("u","e");
+
+		text = text.replaceAll("á","é");
+		text = text.replaceAll("í","é");
+		text = text.replaceAll("ó","é");
+		text = text.replaceAll("ú","é");
+
+		text = text.replaceAll("A","E");
+		text = text.replaceAll("I","E");
+		text = text.replaceAll("O","E");
+		text = text.replaceAll("U","E");
+
+		text = text.replaceAll("Á","É");
+		text = text.replaceAll("Í","É");
+		text = text.replaceAll("Ó","É");
+		text = text.replaceAll("Ú","É");
+		return text;
+	}
+
+	function ree(text, vowel){
+		var array = text.split(" ");
+		var result = "";
+		var i = 0;
+		for(var word = array[0]; i<array.length; word = array[++i]){
+			var a = word.lastIndexOf("a");
+			var o = word.lastIndexOf("o");
+			if(a<-1 && o<-1){
+				return text;
+			} else {
+				if(a>o){
+					word = word.substring(0,a) + vowel + word.substring(a+1,word.length);
+				} else if(o>a){
+					word = word.substring(0,o) + vowel + word.substring(o+1,word.length);
+				}
+			}
+			result += word + " ";
+		}
+		return result;
+	}
+
+	function doit() {
+		var t = document.getElementById('intext').value;
+		if(document.getElementById('x_radio').checked==true){
+			document.getElementById('outtext').value = ree(t, "x");
+		} else if(document.getElementById('e_radio').checked==true){
+			document.getElementById('outtext').value = ree(t, "e");
+		} else if(document.getElementById('ex_radio').checked==true){
+			document.getElementById('outtext').value = eextreme(t);
+		} else if(document.getElementById('ret_radio').checked==true){
+			document.getElementById('outtext').value = retard(t);
+		}
+	}
+
+	function clearArea(){
+		document.getElementById('intext').value = "";
+		doit();
+	}
+
+	function copyArea(){
+		document.getElementById('outtext').select();
+		document.getElementById('outtext').setSelectionRange(0, 99999);
+		document.execCommand("copy");
+	}
+</script>
+
+</html>
